@@ -33,7 +33,30 @@ def contact(request):
 # ...
 
 # Create a `registration_request` view to handle sign up request
-# def registration_request(request):
+def registration(request):
+    if request.method == "POST":
+        # Get the POST parameters
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists')
+            return redirect('djangoapp:registration')
+
+        # Create the user
+        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+        user.save()
+        
+        # Log the user in
+        login(request, user)
+
+        # Redirect to index page
+        return redirect('djangoapp:index')
+    else:
+        return render(request, 'djangoapp/registration.html')
 # ...
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
