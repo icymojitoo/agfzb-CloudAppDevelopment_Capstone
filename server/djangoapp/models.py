@@ -2,13 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 
 
-# Create your models here.
-
-# <HINT> Create a Car Make model `class CarMake(models.Model)`:
-# - Name
-# - Description
-# - Any other fields you would like to include in car make model
-# - __str__ method to print a car make object
 class CarMake(models.Model):
     name = models.CharField(max_length=50, primary_key=True)
     description = models.CharField(max_length=200)
@@ -16,15 +9,6 @@ class CarMake(models.Model):
     def __str__(self):
         return self.name
 
-
-# <HINT> Create a Car Model model `class CarModel(models.Model):`:
-# - Many-To-One relationship to Car Make model (One Car Make has many Car Models, using ForeignKey field)
-# - Name
-# - Dealer id, used to refer a dealer created in cloudant database
-# - Type (CharField with a choices argument to provide limited choices such as Sedan, SUV, WAGON, etc.)
-# - Year (DateField)
-# - Any other fields you would like to include in car model
-# - __str__ method to print a car make object
 
 class CarModel(models.Model):
     make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
@@ -36,27 +20,30 @@ class CarModel(models.Model):
     def __str__(self):
         return self.name
 
-# <HINT> Create a plain Python class `CarDealer` to hold dealer data
-class CarDealer(object):
-    def __init__(self, name, address, city, state, zipcode, phone, email):
-        self.name = name
+class CarDealer:
+
+    def __init__(self, address, city, full_name, id, lat, long, short_name, st, zip):
+        # Dealer address
         self.address = address
+        # Dealer city
         self.city = city
-        self.state = state
-        self.zipcode = zipcode
-        self.phone = phone
-        self.email = email
+        # Dealer Full Name
+        self.full_name = full_name
+        # Dealer id
+        self.id = id
+        # Location lat
+        self.lat = lat
+        # Location long
+        self.long = long
+        # Dealer short name
+        self.short_name = short_name
+        # Dealer state
+        self.st = st
+        # Dealer zip
+        self.zip = zip
 
     def __str__(self):
-        return self.name
+        return "Dealer name: " + self.full_name
 
 
 # <HINT> Create a plain Python class `DealerReview` to hold review data
-class DealerReview(object):
-    def __init__(self, dealer_id, rating, comment):
-        self.dealer_id = dealer_id
-        self.rating = rating
-        self.comment = comment
-
-    def __str__(self):
-        return self.comment
