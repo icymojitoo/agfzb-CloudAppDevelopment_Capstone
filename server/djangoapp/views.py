@@ -96,6 +96,9 @@ def get_dealerships(request):
 # def get_dealer_details(request, dealer_id):
 # ...
 
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/dealership/?state=CA
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/review/?dealerId=23
+
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
