@@ -43,8 +43,11 @@ jobs:
       - name: List all applications
         run: ibmcloud cf apps
         shell: bash
-      - name: Set up environment
-        run: echo "API_KEY="$API_KEY" && echo "API_URL="$API_URL"
+      - name: Set up api key
+        run: export API_KEY="$API_KEY"
+        shell: bash
+      - name: Set up api url
+        run: export API_URL="$API_URL"
         shell: bash
       - name: Deploy manifest file
         run: ibmcloud cf push -f ./$MANIFEST_NAME
