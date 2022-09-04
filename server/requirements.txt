@@ -1,6 +1,5 @@
 requests
 Django
 gunicorn==20.0.4
-django-environ
 ibm_watson
 ibm_cloud_sdk_core
