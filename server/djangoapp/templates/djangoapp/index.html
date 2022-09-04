@@ -14,11 +14,11 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>City</th>
                         <th>Full Name</th>
-                        <th>ID</th>
                         <th>Latitude</th>
                         <th>Longitude</th>
                         <th>Short Name</th>
@@ -29,11 +29,11 @@
                 </thead>
                 {% for dealer in dealerships %}
                     <tr>
+                        <td>{{ dealer.id }}</td>
                         <td>{{ dealer.full_name }}</td>
                         <td>{{ dealer.address }}</td>
                         <td>{{ dealer.city }}</td>
                         <td>{{ dealer.full_name }}</td>
-                        <td>{{ dealer.id }}</td>
                         <td>{{ dealer.lat }}</td>
                         <td>{{ dealer.long }}</td>
                         <td>{{ dealer.short_name }}</td>
