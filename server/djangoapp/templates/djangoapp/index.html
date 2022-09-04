@@ -5,9 +5,23 @@
 {% endblock %}
 
 {% block body %}
-
-    This is the index page of your Django app!
-
     <!--Add a dealer table here -->
+    <h1 class="text-center m-2">Dealers</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
+            </tr>
+        </thead>
+        {% for dealer in dealerships %}
+            <tr>
+                <td>{{ dealer }}</td>
+            </tr>
+        {% endfor %}
 
 {% endblock %}
