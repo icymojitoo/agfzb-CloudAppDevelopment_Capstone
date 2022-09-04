@@ -52,18 +52,19 @@
             <div class="col-md-12">
                 <h1 class="text-center m-2">Reviews</h1>
                 <h2>Reviews for {{dealer.full_name}}</h2>
+                {% for review in reviews %}
                 <div class="card-columns">
                     <div class="card">
-                        {% for review in reviews %}
                         <div class="card-body">
+                            {% load static %}
                             <img class="card-img-left w-25 h-25" src="{{MEDIA_URL}}/emoji/{{ review.sentiment }}.png">
                             <h5 class="card-title">{{ review.car_make }}, {{ review.car_model }}</h5>
                             <h5 class="card-title">{{ review.car_year }}</h5>
                             <p class="card-text">{{ review.review }}</p>
                         </div>
-                        {% endfor %}
                     </div>
-                </div>        
+                </div> 
+                {% endfor %}       
                 {% if user.is_authenticated %}
                     <a class="btn btn-primary" href="{% url 'djangoapp:add_review' dealer.id %}">Add Review</a>
                 {% endif %}

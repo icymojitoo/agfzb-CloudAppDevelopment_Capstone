@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-WATSON_API_KEY = os.environ.get('WATSON_KEY')
-WATSON_API_URL = os.environ.get('WATSON_URL')
+API_KEY = os.environ.get('API_KEY')
+API_URL = os.environ.get('API_URL')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

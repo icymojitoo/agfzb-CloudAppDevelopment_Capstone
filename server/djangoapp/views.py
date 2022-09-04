@@ -9,6 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+from .models import CarModel, CarMake
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -97,9 +98,6 @@ def get_dealer_details(request, dealerId):
     if request.method == "GET":
         # Get dealers from the URL
         url = f'https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/review/?dealerId={dealerId}'
-
-        print(1)
-
         reviews = get_dealer_by_id_from_cf(url, dealerId)
         for i in range(len(reviews)):
             reviews[i].sentiment = reviews[i].sentiment.capitalize()
@@ -114,17 +112,44 @@ def get_dealer_details(request, dealerId):
 # Create a `add_review` view to submit a review
 def add_review(request, dealerId):
     if request.method == "GET":
-        return render(request, 'djangoapp/add_review.html', {'dealerId': dealerId})
+        cars = CarModel.objects.all()
+        # filter by dealerId
+        cars = cars.filter(dealer_id=dealerId)
+        url_dealerships = "https://a8b45b9f.eu-gb.apigw.appdomain.cloud/dealership"
+        dealerships = get_dealers_from_cf(url_dealerships)
+        dealer_info = []
+        for dealer in dealerships:
+            if dealerId == dealer.id:
+                dealer_info.append(dealer)
+        print(dealer_info)
+        return render(request, 'djangoapp/add_review.html', {'dealerId': dealerId, 'cars': cars})
     else:
+        
+
         # Get the posted form data
+        first_name = User.objects.get(username=request.user).first_name
+        last_name = User.objects.get(username=request.user.username).last_name
+        name = first_name + " " + last_name
+
         review = {
-            "name": request.POST.get("name"),
-            "review": request.POST.get("review"),
-            "time": datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+            "id": dealerId,
+            "name": name,
+            "review": request.POST.get("content"),
+            "purchase": request.POST.get("purchasecheck"),
+            "car": request.POST.get("car"),
+            "purchase_date": request.POST.get("purchasedate"),
+            "time": datetime.utcnow().isoformat(),
+            "dealership": dealerId,
         }
 
         json_payload = {"review": review}
 
-        url = "https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/review"
-        post_request(url, json_payload)
-        return redirect('djangoapp:dealer_details')
+        url = "https://eu-gb.functions.appdomain.cloud/api/v1/web/Mohitshi%40icloud.com_djangoserver-space/default/post_review"
+        req = post_request(url, json_payload)
+        return redirect('djangoapp:dealer_details', dealerId=dealerId)
+
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/dealership?state=CA
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/review/?dealerId=1
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/dealership
+# https://a8b45b9f.eu-gb.apigw.appdomain.cloud/api/review/
+# https://eu-gb.functions.appdomain.cloud/api/v1/web/Mohitshi%40icloud.com_djangoserver-space/default/post_review

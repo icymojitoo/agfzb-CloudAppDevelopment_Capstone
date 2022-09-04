@@ -51,20 +51,38 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-center m-2">Add Review</h1>
-    <form action="{% url 'djangoapp:add_review' dealerId %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
-        </div>
-        <div class="form-group">
-            <label for="review">Review</label>
-            <textarea class="form-control" name="review" id="review" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+                
+                    <form action="{% url 'djangoapp:add_review' dealerId %}" method="post">
+                        {% csrf_token %}
+                        <p>
+                            <b>Enter the review content:</b> 
+                            <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+                        </p>
+                        <input class="form-check-input ml-1" type="checkbox" name="purchasecheck" id="purchasecheck" value="">
+                        <p class="pl-4">    Has purchased the car from Sub-Ex Car Dealership
+                            <text class="text-secondary">(select purchased car info below if checked)</text>
+                        </p>
+                        <p><b>Select Your Car(model-make-year):</b>
+                            <select name="car" id="car" class="form-select" required>
+                            {% for car in cars %}
+                                <option></option>
+                                <option class="w-25" selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
+                            {% endfor %}
+                            </select>
+                        </p>
+                        <p>
+                            <b>Select You Purchase Date</b>: 
+                            <input class="date-own form-control w-25" type="text" name="purchasedate" placeholder="Purchase Date" id="purchasedate">
+                        </p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $('.date-own').datepicker({
+           format: 'mm/dd/yyyy'
+         });
+   </script>
     </body>
 </html>

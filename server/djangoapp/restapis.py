@@ -67,7 +67,6 @@ def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
     results = []
-    print('a')
     # Call get_request with a URL parameter
     json_result = get_request(url, dealerId=dealerId)
     if json_result:
@@ -75,20 +74,32 @@ def get_dealer_by_id_from_cf(url, dealerId):
         reviews = json_result['dbs']
         for i in range(len(reviews)):
             # Create a CarDealer object with values in `doc` object
-            review_obj = DealerReview(
-                car_make=reviews[i]["car_make"],
-                car_model=reviews[i]["car_model"],
-                car_year=reviews[i]["car_year"],
-                dealership=reviews[i]["dealership"],
-                name=reviews[i]["name"], 
-                purchase=reviews[i]["purchase"],
-                purchase_date=reviews[i]["purchase_date"],
-                review=reviews[i]["review"],
-                id=reviews[i]["id"],
-                sentiment = analyze_review_sentiments(reviews[i]["review"]),
-            )
-            results.append(review_obj)
-        print('b')
+            if reviews[i]["purchase"] == True:
+                review_obj = DealerReview(
+                    car_make=reviews[i]["car_make"],
+                    car_model=reviews[i]["car_model"],
+                    car_year=reviews[i]["car_year"],
+                    dealership=reviews[i]["dealership"],
+                    name=reviews[i]["name"], 
+                    purchase=reviews[i]["purchase"],
+                    purchase_date=reviews[i]["purchase_date"],
+                    review=reviews[i]["review"],
+                    id=reviews[i]["id"],
+                    sentiment = analyze_review_sentiments(reviews[i]["review"]),
+                )
+                results.append(review_obj)
+            else:
+                review_obj = DealerReview(
+                    dealership=reviews[i]["dealership"],
+                    name=reviews[i]["name"], 
+                    purchase=reviews[i]["purchase"],
+                    review=reviews[i]["review"],
+                    sentiment = analyze_review_sentiments(reviews[i]["review"]),
+                )
+                print(f'Res: {review_obj}')
+                results.append(review_obj)
+                
+
         return results
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
@@ -97,13 +108,13 @@ def analyze_review_sentiments(text):
 # - Get the returned sentiment label such as Positive or Negative
 
     # Create an authenticator
-    authenticator = IAMAuthenticator(settings.WATSON_API_KEY)
+    authenticator = IAMAuthenticator(settings.API_KEY)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         version='2020-08-01',
         authenticator=authenticator
     )
 
-    natural_language_understanding.set_service_url(settings.WATSON_API_URL)
+    natural_language_understanding.set_service_url(settings.API_URL)
 
     response = natural_language_understanding.analyze(
         text=text,
