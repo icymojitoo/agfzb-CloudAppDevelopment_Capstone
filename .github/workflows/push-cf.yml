@@ -9,8 +9,6 @@ env:
   IBM_CLOUD_ORG: Mohitshi@icloud.com
   MANIFEST_NAME: manifest.yml
   IBM_CLOUD_API: ${{secrets.IBM_CLOUD_API_KEY}}
-  W_API_KEY: ${{secrets.WATSON_API_KEY}}
-  W_API_URL: ${{secrets.WATSON_API_KEY}}
 
 defaults:
   run:
@@ -41,12 +39,6 @@ jobs:
         shell: bash
       - name: List all applications
         run: ibmcloud cf apps
-        shell: bash
-      - name: Set up API KEY
-        run: echo API_KEY=$W_API_KEY
-        shell: bash
-      - name: Set up API URL
-        run: echo API_URL=$W_API_URL
         shell: bash
       - name: Deploy manifest file
         run: ibmcloud cf push -f ./$MANIFEST_NAME
