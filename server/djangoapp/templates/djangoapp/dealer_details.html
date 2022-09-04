@@ -10,8 +10,76 @@
     <body>
 
     <!--Add a nav bar here -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                  <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Dealerships</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <div class="input-group">
+                    <li>
+                        <a class="navbar-brand" href="{% url 'djangoapp:about' %}">About</a>
+                    </li>
+                    <li>
+                        <a class="navbar-brand" href="{% url 'djangoapp:contact' %}">Contact</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                        <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Username" name="username" >
+                                <input type="password" class="form-control" placeholder="Username" name="psw" >
+                                <button class="btn btn-primary" type="submit">Login</button>
+                                <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                            </div>
+                        </form>
+                    </li>
+                    {% endif %}
+                </div>        
+            </ul>
+        </div>
+    </nav>
 
     <!-- Add reviews as cards -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center m-2">Reviews</h1>
+                <h2>Dealership: {{ dealerId }}</h2>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Car Make</th>
+                            <th>Car Model</th>
+                            <th>Car Year</th>
+                            <th>Name</th>
+                            <th>Purchase</th>
+                            <th>Purchase Date</th>
+                            <th>Review</th>
+                            <th>Sentiment</th>
+                        </tr>
+                    </thead>
+                    {% for review in reviews %}
+                        <tr>
+                            <td>{{ review.car_make }}</td>
+                            <td>{{ review.car_model }}</td>
+                            <td>{{ review.car_year }}</td>
+                            <td>{{ review.name }}</td>
+                            <td>{{ review.purchase }}</td>
+                            <td>{{ review.purchase_date }}</td>
+                            <td>{{ review.review }}</td>
+                            <td>{{ review.sentiment }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
 
     </body>
 

@@ -6,22 +6,46 @@
 
 {% block body %}
     <!--Add a dealer table here -->
-    <h1 class="text-center m-2">Dealers</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center m-2">Dealers</h1>
 
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>State</th>
-                <th>Zip</th>
-            </tr>
-        </thead>
-        {% for dealer in dealerships %}
-            <tr>
-                <td>{{ dealer }}</td>
-            </tr>
-        {% endfor %}
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Full Name</th>
+                        <th>ID</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Short Name</th>
+                        <th>State</th>
+                        <th>Zip</th>
+                        <th>Reviews</th>
+                    </tr>
+                </thead>
+                {% for dealer in dealerships %}
+                    <tr>
+                        <td>{{ dealer.full_name }}</td>
+                        <td>{{ dealer.address }}</td>
+                        <td>{{ dealer.city }}</td>
+                        <td>{{ dealer.full_name }}</td>
+                        <td>{{ dealer.id }}</td>
+                        <td>{{ dealer.lat }}</td>
+                        <td>{{ dealer.long }}</td>
+                        <td>{{ dealer.short_name }}</td>
+                        <td>{{ dealer.st }}</td>
+                        <td>{{ dealer.zip }}</td>
+                        <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">Reviews</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

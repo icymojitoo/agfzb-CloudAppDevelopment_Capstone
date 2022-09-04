@@ -1,7 +1,12 @@
+from cProfile import label
 import requests
 import json
-from .models import CarDealer
+from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_watson.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
+from django.conf import settings
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -58,15 +63,63 @@ def get_dealers_from_cf(url, **kwargs):
 
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
+def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
-
+    results = []
+    print('a')
+    # Call get_request with a URL parameter
+    json_result = get_request(url, dealerId=dealerId)
+    if json_result:
+        # Get the row list in JSON as dealers
+        reviews = json_result['dbs']
+        for i in range(len(reviews)):
+            # Create a CarDealer object with values in `doc` object
+            review_obj = DealerReview(
+                car_make=reviews[i]["car_make"],
+                car_model=reviews[i]["car_model"],
+                car_year=reviews[i]["car_year"],
+                dealership=reviews[i]["dealership"],
+                name=reviews[i]["name"], 
+                purchase=reviews[i]["purchase"],
+                purchase_date=reviews[i]["purchase_date"],
+                review=reviews[i]["review"],
+                id=reviews[i]["id"],
+                sentiment = analyze_review_sentiments(reviews[i]["review"]),
+            )
+            results.append(review_obj)
+        print('b')
+        return results
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
+def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
 
+    # Create an authenticator
 
+    creds = {
+        "apikey": settings.API_KEY,
+        "url": settings.API_URL
+    }
+    authenticator = IAMAuthenticator(creds['apikey'])
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version='2020-08-01',
+        authenticator=authenticator
+    )
+
+    natural_language_understanding.set_service_url(creds['url'])
+
+    response = natural_language_understanding.analyze(
+        text=text,
+        features=Features(
+            entities=EntitiesOptions(emotion=True, sentiment=True, limit=2),
+            keywords=KeywordsOptions(emotion=True, sentiment=True,)
+        )).get_result()
+
+    sentiment = response['keywords'][0]['sentiment']['label']
+    return sentiment
+
+def post_request(url, json_payload, **kwargs):
+    req = requests.post(url, params=kwargs, json=json_payload)
 
