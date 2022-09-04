@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+<<<<<<< HEAD
 import os
-
-
 
 API_KEY = os.environ.get('API_KEY')
 API_URL = os.environ.get('API_URL')
