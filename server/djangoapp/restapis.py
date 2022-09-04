@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
-import os
+from django.conf import settings
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -99,8 +99,8 @@ def analyze_review_sentiments(text):
     # Create an authenticator
 
     creds = {
-        "apikey": os.environ.get('apikey'),
-        "url": os.environ.get('url'),
+        "apikey": settings.API_KEY,
+        "url": settings.API_URL,
     }
     authenticator = IAMAuthenticator(creds['apikey'])
     natural_language_understanding = NaturalLanguageUnderstandingV1(
