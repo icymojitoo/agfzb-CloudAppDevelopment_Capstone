@@ -11,39 +11,39 @@
         <div class="col-md-12">
             <h1 class="text-center m-2">Dealers</h1>
 
-            <table class="table">
+            <table class="table" id="table" data-filter-control="true">
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Short Name</th>
-                        <th>Address</th>
-                        <th>City</th>
                         <th>Full Name</th>
-                        <th>Latitude</th>
-                        <th>Longitude</th>
-                        <th>State</th>
+                        <th>City</th>
+                        <th>Address</th>
                         <th>Zip</th>
-                        <th>Reviews</th>
+                        <th data-field="state" data-filter-control="select">
+                            State
+                            <br />
+                        </th>
                     </tr>
                 </thead>
                 {% for dealer in dealerships %}
                     <tr>
                         <td>{{ dealer.id }}</td>
-                        <td>{{ dealer.short_name }}</td>
-                        <td>{{ dealer.address }}</td>
+                        <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{ dealer.full_name }}</a></td>
                         <td>{{ dealer.city }}</td>
-                        <td>{{ dealer.full_name }}</td>
-                        <td>{{ dealer.lat }}</td>
-                        <td>{{ dealer.long }}</td>
-                        <td>{{ dealer.st }}</td>
+                        <td>{{ dealer.address }}</td>
                         <td>{{ dealer.zip }}</td>
-                        <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">Reviews</a></td>
+                        <td>{{ dealer.st }}</td>
                     </tr>
                 {% endfor %}
             </table>
         </div>
     </div>
 </div>
+<script>
+    $(function() {
+      $('#table').bootstrapTable()
+    })
+</script>
 
 
 {% endblock %}

@@ -34,7 +34,7 @@
                             {% csrf_token %}
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Username" name="username" >
-                                <input type="password" class="form-control" placeholder="Username" name="psw" >
+                                <input type="password" class="form-control" placeholder="Password" name="psw" >
                                 <button class="btn btn-primary" type="submit">Login</button>
                                 <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
                             </div>
@@ -52,22 +52,10 @@
             <div class="col-md-12">
                 <h1 class="text-center m-2">Reviews</h1>
                 <h2>Dealership: {{ dealerId }}</h2>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Car Make</th>
-                            <th>Car Model</th>
-                            <th>Car Year</th>
-                            <th>Name</th>
-                            <th>Purchase</th>
-                            <th>Purchase Date</th>
-                            <th>Review</th>
-                            <th>Sentiment</th>
-                        </tr>
-                    </thead>
+                <div class="card-columns">
+                    <div class="card">
                     {% for review in reviews %}
-                        <tr>
-                            <td>{{ review.car_make }}</td>
+                            <span>{{ review.car_make }}</span>
                             <td>{{ review.car_model }}</td>
                             <td>{{ review.car_year }}</td>
                             <td>{{ review.name }}</td>
@@ -75,11 +63,14 @@
                             <td>{{ review.purchase_date }}</td>
                             <td>{{ review.review }}</td>
                             <td>{{ review.sentiment }}</td>
-                        </tr>
                     {% endfor %}
-                </table>
-            </div>
+                </div>
+            </div>        
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'djangoapp:add_review' dealerId %}">Add Review</a>
+            {% endif %}
         </div>
+    </div>
 
     </body>
 
