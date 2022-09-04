@@ -43,6 +43,11 @@ jobs:
       - name: List all applications
         run: ibmcloud cf apps
         shell: bash
+      - name: Set up environment
+        run: |
+          echo "API_KEY=$API_KEY" >> $GITHUB_ENV
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+        shell: bash
       - name: Deploy manifest file
         run: ibmcloud cf push -f ./$MANIFEST_NAME
         shell: bash
