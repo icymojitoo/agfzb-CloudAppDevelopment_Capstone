@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-API_KEY = os.environ.get('API_KEY')
-API_URL = os.environ.get('API_URL')
+API_KEY = "pXN0BMMWrcHo3WkfE4KXtSTbxNowtDvc86c-AbAXCObN"
+API_URL = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/65d24883-e0db-4bbd-93f9-3de608e78b89"
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
