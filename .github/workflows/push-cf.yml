@@ -9,6 +9,8 @@ env:
   IBM_CLOUD_ORG: Mohitshi@icloud.com
   MANIFEST_NAME: manifest.yml
   IBM_CLOUD_API: ${{secrets.IBM_CLOUD_API_KEY}}
+  WATSON_KEY: ${{secrets.WATSON_API_KEY}}
+  WATSON_URL: ${{secrets.WATSON_API_KEY}}
 
 
 defaults:
@@ -41,13 +43,13 @@ jobs:
       - name: List all applications
         run: ibmcloud cf apps
         shell: bash
+      - name: Environment variables
+        run: |
+          echo "IBM_CLOUD_API=$IBM_CLOUD_API" >> $GITHUB_ENV
+          echo "WATSON_KEY=$WATSON_KEY" >> $GITHUB_ENV
+          echo "WATSON_URL=$WATSON_URL" >> $GITHUB_ENV
+        shell: bash
       - name: Deploy manifest file
         run: ibmcloud cf push -f ./$MANIFEST_NAME
-        shell: bash
-      - name: Watson API
-        run: export API_KEY=$API_KEY
-        shell: bash
-      - name: Watson URL
-        run: export API_URL=$API_URL
         shell: bash
 
