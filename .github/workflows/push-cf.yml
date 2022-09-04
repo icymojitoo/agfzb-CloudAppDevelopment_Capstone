@@ -10,8 +10,8 @@ env:
   IBM_CLOUD_ORG: Mohitshi@icloud.com
   MANIFEST_NAME: manifest.yml
   IBM_CLOUD_API: ${{secrets.IBM_CLOUD_API_KEY}}
-  API_KEY: ${{secrets.IBM_CLOUD_API_KEY}}
-  API_URL: ${{secrets.IBM_CLOUD_API_KEY}}
+  API_KEY: ${{secrets.API_KEY}}
+  API_URL: ${{secrets.API_KEY}}
 
 defaults:
   run:
