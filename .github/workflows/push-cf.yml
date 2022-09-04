@@ -13,6 +13,7 @@ env:
   API_KEY: ${{secrets.API_KEY}}
   API_URL: ${{secrets.API_KEY}}
 
+
 defaults:
   run:
     working-directory: server
@@ -43,11 +44,13 @@ jobs:
       - name: List all applications
         run: ibmcloud cf apps
         shell: bash
-      - name: Set up environment
-        run: |
-          echo "API_KEY=$API_KEY" >> $GITHUB_ENV
-          echo "API_URL=$API_URL" >> $GITHUB_ENV
-        shell: bash
       - name: Deploy manifest file
         run: ibmcloud cf push -f ./$MANIFEST_NAME
         shell: bash
+      - name: Watson API
+        run: export API_KEY=$API_KEY
+        shell: bash
+      - name: Watson URL
+        run: export API_URL=$API_URL
+        shell: bash
+
